@@ -34,7 +34,7 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 
 	temp := &Account{}
 
-	err := GetDb().Table("accoutns").Where("email = ?", account.Email).First(temp).Error
+	err := GetDb().Table("accounts").Where("email = ?", account.Email).First(temp).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return u.Message(false, "Connection error. Please retry"), false

@@ -1,10 +1,3 @@
-# FROM golang:1.12.7-alpine3.10
-# RUN mkdir /app
-# ADD . /app
-# WORKDIR /app
-# RUN go build -o main .
-# CMD ["/app/main"]
-
 
 # Start from the latest golang base image
 FROM golang:latest
@@ -24,7 +17,7 @@ COPY . .
 # Build the Go app
 RUN go build -o main .
 
-# Expose port 8080 to the outside world
+# Expose port 3000 to the outside world
 EXPOSE 3000
 
 # Command to run the executable
