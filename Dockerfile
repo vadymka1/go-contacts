@@ -5,23 +5,27 @@
 # RUN go build -o main .
 # CMD ["/app/main"]
 
-FROM golang:latest AS builder
 
-RUN mkdir -p /go/src/app
+# Start from the latest golang base image
+FROM golang:latest
 
-WORKDIR /go/src/app
+# Set the Current Working Directory inside the container
+WORKDIR /app
 
-COPY . "/work/src/github.com/go-crud"
+# Copy go mod and sum files
+COPY go.mod go.sum ./
 
-RUN apk add --no-cache git
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
 
-RUN go-wrapper download
+# Copy the source from the current directory to the Working Directory inside the container
+COPY . .
 
-RUN go-wrapper install
+# Build the Go app
+RUN go build -o main .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -o /your-app
-
-CMD ["go-wrapper", "run", "-web"]
-
+# Expose port 8080 to the outside world
 EXPOSE 3000
 
+# Command to run the executable
+CMD ["./main"]
